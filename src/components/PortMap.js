@@ -16,6 +16,7 @@ const LAYER_DEFS = [
 ];
 
 export default class PortMap extends React.PureComponent {
+  state = {showCruise: false, showPort: true}
   static propTypes = {
     className: PropTypes.string,
     updatePorts: PropTypes.func
@@ -81,7 +82,7 @@ export default class PortMap extends React.PureComponent {
     LAYER_DEFS.forEach(async (def, i) => {
       try {
         const harbors = await this.requestData(bounds, def);
-
+        console.log(harbors)
         // check that our request is not stale
         if (requestId === this._requestId) {
           // put this data into the map
@@ -102,8 +103,21 @@ export default class PortMap extends React.PureComponent {
   }
 
   async requestData(bounds, def) {
+    const {showCruise, showPort} = this.state
+    let portType
+    if (showPort && showCruise) {
+      portType = def.type
+    } else {
+      if (showPort) {
+        portType = 'port'
+      }
+      if (showCruise) {
+        portType = 'cruise'
+      }
+    }
+
     const response = await ApiService.getHarbors({
-      portType: def.type,
+      portType: portType,
       minlat: bounds._southWest.lat,
       minlon: bounds._southWest.lng,
       maxlat: bounds._northEast.lat,

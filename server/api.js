@@ -32,12 +32,13 @@ function getPorts(req, res) {
   }
 
   if (req.query.type) {
+    console.log(req.query.type)
     result = result.filter((port) => {
       return (req.query.type) ? (port.type === req.query.type) : true;
     });
   }
 
-  res.json({ ports: result });
+  res.json({ports: result});
 }
 
 // See https://expressjs.com/en/guide/routing.html for instructions on how to add new endpoints.
