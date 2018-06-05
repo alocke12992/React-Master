@@ -1,0 +1,8 @@
+// NOTE: These options are overriden by the babel-loader configuration
+// for webpack, which can be found in ~/build/webpack.config.
+//
+// BUT we need them here for babel-node when running the dev server
+{
+  "presets": ["es2015", "react", "stage-0"],
+  "plugins": ["transform-runtime"]
+}
