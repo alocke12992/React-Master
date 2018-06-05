@@ -2,7 +2,19 @@
   height: 400px;
 }
 
-.map__nav {
+.mainWrapper {
+  border: solid 1px #ccc;
+  display: flex;
+  height: 600px;
+}
+
+.mapWrapper {
+  position: relative;
+  height: 100%;
+  width: 75%;
+}
+
+.sideBar {
   width: 25%;
   background: lightblue;
   overflow-y: scroll;
