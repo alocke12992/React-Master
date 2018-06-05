@@ -1,22 +1,21 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class SideBar extends React.Component {
+const SideBar = ({className, ports}) => {
+  console.log('state', ports);
+  const portsCollection = ports.map((port, index) => {
+    return <div key={index}>{port.name}</div>
+  });
+  return (
+    <div className={className}>
+      {portsCollection}
+    </div>
+  )
+};
 
-  render() {
-    return (
-      <div>
-        Side Bar
-      </div>
-    )
-  }
+SideBar.propTypes = {
+  className: PropTypes.string,
+  ports: PropTypes.array.isRequired
+};
 
-}
-
-const mapStateToProps = (state) => {
-  return {
-    porst: state.ports
-  }
-}
-
-export default connect(mapStateToProps)(SideBar)
+export default SideBar;

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
+import {findDOMNode} from 'react-dom';
 import classnames from 'classnames';
 import L from 'leaflet';
 import './PortMap.scss';
@@ -11,13 +11,14 @@ import ApiService from 'services/api.service';
 import uniqueId from 'lodash/uniqueId';
 
 const LAYER_DEFS = [
-  { type: "port", icon: portIcon, name: "Ports" },
-  { type: "cruise", icon: cruiseIcon, name: "Cruises" },
+  {type: "port", icon: portIcon, name: "Ports"},
+  {type: "cruise", icon: cruiseIcon, name: "Cruises"},
 ];
 
 export default class PortMap extends React.PureComponent {
   static propTypes = {
     className: PropTypes.string,
+    updatePorts: PropTypes.func
   }
 
   render() {
@@ -34,15 +35,15 @@ export default class PortMap extends React.PureComponent {
     // Initialize the Leaflet map
     const element = findDOMNode(this);
 
-    this._map = L.map(element, { trackResize: false }).setView(START_LATLNG, START_ZOOM);
+    this._map = L.map(element, {trackResize: false}).setView(START_LATLNG, START_ZOOM);
 
     // Add the basemap tile layer
     L.tileLayer(
       'https://api.mapbox.com/styles/v1/{id}/{z}/{x}/{y}?access_token={accessToken}',
       {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' +
-        ', Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' +
+          ', Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 18,
         id: 'mapbox/satellite-streets-v10/tiles/256',
         accessToken: 'pk.eyJ1IjoiYnJhbmRvbmRldiIsImEiOiJjajFwNjNmODAwMDBnMzFwbDJ4N21yZmFmIn0.YC44JxjiM36-I54e-hVQUA'
@@ -63,7 +64,7 @@ export default class PortMap extends React.PureComponent {
     this._map.on("moveend", () => this.loadLayerData(this._map.getBounds()));
 
     // resize the map whenever our container element size changes
-    resizeListener({ strategy: "scroll" }).listenTo(element, ev => this._map.invalidateSize());
+    resizeListener({strategy: "scroll"}).listenTo(element, ev => this._map.invalidateSize());
   }
 
   componentDidUpdate(prevProps) {
@@ -110,6 +111,8 @@ export default class PortMap extends React.PureComponent {
     });
 
     const data = await response.json();
+    // Update store with ports
+    this.props.updatePorts(data.ports)
     return data.ports;
   }
 
