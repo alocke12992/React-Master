@@ -71,6 +71,7 @@ export default class PortMap extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
     if (this.props !== prevProps) {
+      debugger
       this.loadLayerData(this._map.getBounds())
     }
     // make changes to this._map based on changes between this.props and prevProps
@@ -134,11 +135,20 @@ export default class PortMap extends React.PureComponent {
     return data.ports;
   }
 
+  popUp = (harbor) => {
+    return (
+      `<div>
+        <b>${harbor.name}</b><br />city:${harbor.city}
+        <a href="something">Show</a>
+      </div>`
+    )
+  }
+
   createMarker(harbor, icon) {
     return L
       .marker([harbor.latitude, harbor.longitude], {
         icon: icon
       })
-      .bindPopup(`<b>${harbor.name}</b><br>city: ${harbor.city}`);
+      .bindPopup(() => this.popUp(harbor));
   }
 }
