@@ -1,0 +1,41 @@
+#toggle {
+  opacity: 0;
+}
+
+#label {
+  display: inline-block;
+  background: #2c3e50;
+  width: 2em;
+  height: 1em;
+  border-radius: 0.5em;
+  position: relative;
+  cursor: pointer;
+  background: #2c3e50;
+}
+
+#switch {
+  position: absolute;
+  width: 0.9em;
+  height: 0.9em;
+  margin-top: 0.05em;
+  margin-left: 0.05em;
+  border-radius: 1em;
+  background: #c0392b;
+  box-shadow: 5px 0px 28px -9px rgba(0, 0, 0, 0.75);
+  transition: transform .2s ease-in;
+}
+
+#toggle:checked ~ #label #switch {
+  background: #2ecc71;
+  transform: translatex(1em);
+  transition: transform .2s ease-in;
+}
+
+/* Unimportant styles */
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-top: 10%;
+  text-align: center;
+}

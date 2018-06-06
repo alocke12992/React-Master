@@ -16,10 +16,11 @@ const LAYER_DEFS = [
 ];
 
 export default class PortMap extends React.PureComponent {
-  state = {showCruise: false, showPort: true}
   static propTypes = {
     className: PropTypes.string,
-    updatePorts: PropTypes.func
+    updatePorts: PropTypes.func,
+    showCruise: PropTypes.bool,
+    showPort: PropTypes.bool
   }
 
   render() {
@@ -69,6 +70,9 @@ export default class PortMap extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.loadLayerData(this._map.getBounds())
+    }
     // make changes to this._map based on changes between this.props and prevProps
   }
 
@@ -103,7 +107,7 @@ export default class PortMap extends React.PureComponent {
   }
 
   async requestData(bounds, def) {
-    const {showCruise, showPort} = this.state
+    const {showCruise, showPort} = this.props
     let portType
     if (showPort && showCruise) {
       portType = def.type
