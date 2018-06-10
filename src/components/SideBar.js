@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './SideBar.scss'
 
-const SideBar = ({className, ports, toggleCruise, togglePort, togglePortView, showCruise, showPort, setPort}) => {
+const SideBar = ({className, ports, toggleCruise, togglePort, showCruise, showPort}) => {
   const portsCollection = ports.map((port) => {
     return <div key={port.id}>
       <p>
-        <button onClick={() => togglePortView(port)}>{port.name}</button>
+        {port.name}
       </p>
     </div>
   });
