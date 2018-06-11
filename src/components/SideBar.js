@@ -2,12 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './SideBar.scss'
 
-const SideBar = ({className, ports, toggleCruise, togglePort, showCruise, showPort}) => {
+const SideBar = (
+  {
+    className,
+    ports,
+    toggleCruise,
+    togglePort,
+    showCruise,
+    showPort,
+    setPort
+  }) => {
   const portsCollection = ports.map((port) => {
     return <div key={port.id}>
       <p>
         {port.name}
       </p>
+      <button onClick={() => setPort(port)}>Show</button>
     </div>
   });
   return (

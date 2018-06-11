@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import './HomeView.scss';
 import PortMap from 'components/PortMap';
 import SideBar from 'components/SideBar';
+import HarborView from 'components/HarborView';
 import ApiService from '../../../services/api.service';
 
 class HomeView extends React.Component {
-  state = {showCruise: true, showPort: true, portView: false}
+  state = {showCruise: true, showPort: true, portView: false, harborView: false, port: null}
 
   // Need to refactor these two functions into one 
   toggleCruise = () => {
@@ -25,9 +26,17 @@ class HomeView extends React.Component {
     })
   }
 
+  setPort = (port) => {
+    if (this.state.port === null) {
+      this.setState({port: port})
+    } else {
+      this.setState({port: null})
+    }
+  }
+
   render() {
     const {ports, updatePorts} = this.props
-    const {showCruise, showPort} = this.state
+    const {showCruise, showPort, port} = this.state
     return (
       <div className="mainWrapper">
         <SideBar
@@ -37,9 +46,12 @@ class HomeView extends React.Component {
           togglePort={this.togglePort}
           showCruise={showCruise}
           showPort={showPort}
+          setPort={this.setPort}
         />
         <div className="mapWrapper">
-          {this.state.portView ? null :
+          {port ?
+            <HarborView port={port} toggleView={this.setPort} />
+            :
             <div>
               <h4>Port Map</h4>
               <PortMap
@@ -47,6 +59,7 @@ class HomeView extends React.Component {
                 updatePorts={updatePorts}
                 showCruise={showCruise}
                 showPort={showPort}
+                port={port}
               />
             </div>
           }

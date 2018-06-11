@@ -72,6 +72,9 @@ export default class PortMap extends React.PureComponent {
   componentDidUpdate(prevProps) {
     if (this.props !== prevProps) {
       this.loadLayerData(this._map.getBounds())
+      if (this.props.port !== null) {
+        // this.togglePopUp(this.props.port)
+      }
     }
     // make changes to this._map based on changes between this.props and prevProps
   }
@@ -81,12 +84,15 @@ export default class PortMap extends React.PureComponent {
     this._requestId = undefined;
   }
 
+  togglePopUp(port) {
+    // Map.openPopup([port.latitude, port.longitude])
+  }
+
   loadLayerData(bounds) {
     const requestId = this._requestId = uniqueId();
     LAYER_DEFS.forEach(async (def, i) => {
       try {
         const harbors = await this.requestData(bounds, def);
-        console.log(harbors)
         // check that our request is not stale
         if (requestId === this._requestId) {
           // put this data into the map

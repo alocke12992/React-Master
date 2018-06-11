@@ -5,7 +5,7 @@ import Footer from 'components/Footer';
 import './CoreLayout.scss';
 
 export const CoreLayout = ({children}) => (
-  <div className="container text-center">
+  <div>
     {/* <Header className="core-layout__header" /> */}
     <div className="core-layout__viewport">
       {children}
