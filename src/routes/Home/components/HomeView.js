@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import './HomeView.scss';
 import PortMap from 'components/PortMap';
 import SideBar from 'components/SideBar';
-import HarborView from 'components/HarborView';
-import ApiService from '../../../services/api.service';
+import DetailsView from 'components/DetailsView';
 
 class HomeView extends React.Component {
   state = {showCruise: true, showPort: true, portView: false, harborView: false, port: null}
@@ -48,22 +47,25 @@ class HomeView extends React.Component {
           showPort={showPort}
           setPort={this.setPort}
         />
-        <div className="mapWrapper">
-          {port ?
-            <HarborView port={port} toggleView={this.setPort} />
-            :
-            <div>
-              <h4>Port Map</h4>
-              <PortMap
-                className="home--portMap"
-                updatePorts={updatePorts}
-                showCruise={showCruise}
-                showPort={showPort}
-                port={port}
-              />
-            </div>
-          }
+        { port ? 
+        <div className="home--portMap">
+          <DetailsView 
+            port={port}
+            unsetPort={this.setPort} 
+          />
         </div>
+          : 
+          <div className="mapWrapper">
+            <h4>Port Map</h4>
+            <PortMap
+              className="home--portMap"
+              updatePorts={updatePorts}
+              showCruise={showCruise}
+              showPort={showPort}
+              port={port}
+            />
+          </div>
+        }
       </div>
     )
   }

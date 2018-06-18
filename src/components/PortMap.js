@@ -62,6 +62,7 @@ export default class PortMap extends React.PureComponent {
     this._iconLayers = LAYER_DEFS.map(def => new L.LayerGroup());
     this._iconLayers.forEach(l => this._map.addLayer(l));
 
+    this.loadLayerData(this._map.getBounds())
     // Whenever the user pans, load data for the new bounds
     this._map.on("moveend", () => this.loadLayerData(this._map.getBounds()));
 
@@ -72,9 +73,6 @@ export default class PortMap extends React.PureComponent {
   componentDidUpdate(prevProps) {
     if (this.props !== prevProps) {
       this.loadLayerData(this._map.getBounds())
-      if (this.props.port !== null) {
-        // this.togglePopUp(this.props.port)
-      }
     }
     // make changes to this._map based on changes between this.props and prevProps
   }
@@ -85,7 +83,7 @@ export default class PortMap extends React.PureComponent {
   }
 
   togglePopUp(port) {
-    // Map.openPopup([port.latitude, port.longitude])
+    this._map.openPopup({ lat: port.latitude, lng: port.longitude })
   }
 
   loadLayerData(bounds) {
@@ -115,19 +113,15 @@ export default class PortMap extends React.PureComponent {
   async requestData(bounds, def) {
     const {showCruise, showPort} = this.props
     let portType
-    if (showPort && showCruise) {
-      portType = def.type
-    } else {
-      if (showPort) {
-        portType = 'port'
-      }
-      if (showCruise) {
-        portType = 'cruise'
-      }
+    if (def.type === "port" && !showPort) {
+      return []
+    }
+    if (def.type === "cruise" && !showCruise) {
+      return []
     }
 
     const response = await ApiService.getHarbors({
-      portType: portType,
+      portType: def.type,
       minlat: bounds._southWest.lat,
       minlon: bounds._southWest.lng,
       maxlat: bounds._northEast.lat,
